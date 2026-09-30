@@ -9,8 +9,7 @@ with source_data as (
         trim(country) as country,
         cast(signup_date as date) as signup_date,
         cast(updated_at as timestamp) as updated_at
-
-    from {{ ref('customers') }}
+    from {{ source('ecommerce_raw', 'customers') }}
 
 ),
 

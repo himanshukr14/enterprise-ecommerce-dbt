@@ -6,4 +6,4 @@ select
     upper(trim(currency)) as currency,
     cast(order_total as decimal(18,2)) as order_total,
     cast(updated_at as timestamp) as updated_at
-from {{ ref('orders') }}
+from {{ source('ecommerce_raw', 'orders') }}
