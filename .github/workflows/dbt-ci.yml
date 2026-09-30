@@ -1,0 +1,63 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-core==1.12.3 dbt-databricks==1.12.5
+
+      - name: Create dbt profile
+        working-directory: enterprise_ecommerce
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          mkdir -p ~/.dbt
+
+          cat > ~/.dbt/profiles.yml <<EOF
+          enterprise_ecommerce:
+            target: ci
+            outputs:
+              ci:
+                type: databricks
+                catalog: ecommerce_dev
+                schema: dbt_ci
+                host: $DATABRICKS_HOST
+                http_path: $DATABRICKS_HTTP_PATH
+                token: $DATABRICKS_TOKEN
+                threads: 4
+          EOF
+
+      - name: Verify dbt installation
+        working-directory: enterprise_ecommerce
+        run: dbt --version
+
+      - name: dbt parse
+        working-directory: enterprise_ecommerce
+        run: dbt parse --no-partial-parse
+
+      - name: dbt build
+        working-directory: enterprise_ecommerce
+        run: dbt build
