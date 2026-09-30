@@ -1,0 +1,6 @@
+customer_id,first_name,last_name,email,city,country,signup_date,updated_at
+1001,Himanshu,Kumar,himanshu@example.com,Delhi,India,2025-01-15,2026-09-28T10:00:00
+1002,Aarav,Sharma,aarav@example.com,Mumbai,India,2025-02-20,2026-09-02T10:00:00
+1003,Emma,Wilson,emma@example.com,London,UK,2025-03-10,2026-09-03T10:00:00
+1004,Daniel,Smith,daniel@example.com,New York,USA,2025-04-05,2026-09-03T10:00:00
+1005,Priya,Patel,priya@example.com,Ahmedabad,India,2025-05-12,2026-09-04T10:00:00

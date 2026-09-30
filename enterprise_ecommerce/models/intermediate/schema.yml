@@ -1,0 +1,38 @@
+version: 2
+
+models:
+
+  - name: int_invalid_order_customers
+    description: >
+      Identifies orders whose customer_id does not exist in the current
+      customer dimension source. These records represent source-system
+      referential integrity exceptions and are retained for data-quality
+      monitoring.
+
+    columns:
+
+      - name: order_id
+        description: "Order associated with the invalid customer reference."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer ID from the source order that could not be matched."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+
+      - name: status
+        description: "Current order status."
+
+      - name: currency
+        description: "Currency used for the order."
+
+      - name: order_total
+        description: "Order total provided by the source system."
+
+      - name: updated_at
+        description: "Timestamp when the source order was last updated."

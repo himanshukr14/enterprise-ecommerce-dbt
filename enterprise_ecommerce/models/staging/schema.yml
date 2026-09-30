@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and standardized customer records."
+
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: email
+        description: "Customer email address."
+        data_tests:
+          - not_null
+
+      - name: signup_date
+        description: "Date the customer registered."
+        data_tests:
+          - not_null
+  - name: stg_orders
+    description: "Cleaned and standardized order records."
+
+    columns:
+      - name: order_id
+        description: "Unique identifier for an order."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer associated with the order."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+              config:
+                severity: warn
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: status
+        description: "Current order status."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - completed
+                  - shipped
+                  - pending
+                  - cancelled
+
+      - name: currency
+        description: "Three-letter currency code."
+        data_tests:
+          - not_null

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Analytics-ready order fact table at one row per order."
+
+    columns:
+
+      - name: order_id
+        description: "Unique identifier for the order."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer associated with the order."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: status
+        description: "Current status of the order."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - completed
+                  - shipped
+                  - pending
+                  - cancelled
+
+      - name: currency
+        description: "Currency used for the order."
+        data_tests:
+          - not_null
+
+      - name: order_total
+        description: "Order total provided by the source system."
+        data_tests:
+          - not_null
+
+      - name: calculated_order_total
+        description: "Order total calculated from order item quantities and unit prices."
+        data_tests:
+          - not_null
+
+      - name: total_items
+        description: "Number of order lines associated with the order."
+        data_tests:
+          - not_null

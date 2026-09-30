@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# dbt
+target/
+logs/
+dbt_packages/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
