@@ -108,6 +108,9 @@ select
     o.order_total,
     om.calculated_order_total,
     om.total_items,
+    om.total_quantity,
+    om.distinct_products,
+    om.product_categories,
 
     o.updated_at
 

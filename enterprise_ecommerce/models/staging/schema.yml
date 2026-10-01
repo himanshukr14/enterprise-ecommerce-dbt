@@ -62,3 +62,43 @@ models:
         description: "Three-letter currency code."
         data_tests:
           - not_null
+
+  - name: stg_products
+    description: "Cleaned and standardized product records."
+    columns:
+      - name: product_id
+        description: "Unique identifier for the product."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Product name."
+        data_tests:
+          - not_null
+
+      - name: category
+        description: "Top-level product category."
+        data_tests:
+          - not_null
+
+      - name: unit_cost
+        description: "Product acquisition cost."
+        data_tests:
+          - not_null
+
+      - name: list_price
+        description: "Product selling price."
+        data_tests:
+          - not_null
+
+      - name: currency
+        description: "Currency used for product pricing."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - INR
+                  - USD
+                  - GBP

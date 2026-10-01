@@ -1,0 +1,7 @@
+product_id,product_name,category,subcategory,brand,unit_cost,list_price,currency,updated_at
+2001,Wireless Headphones,Electronics,Audio,SoundMax,1800.00,2499.00,INR,2026-09-01T10:00:00
+2002,Mechanical Keyboard,Electronics,Computer Accessories,KeyPro,700.00,999.00,INR,2026-09-02T10:00:00
+2003,USB-C Cable,Electronics,Computer Accessories,CableTech,180.00,300.00,INR,2026-09-02T10:00:00
+2004,Running Shoes,Footwear,Running,Stride,60.00,89.99,GBP,2026-09-03T10:00:00
+2005,Office Chair,Furniture,Office,ComfortPro,85.00,129.50,USD,2026-09-04T10:00:00
+2006,Smart Watch,Electronics,Wearables,TimeTech,550.00,799.00,INR,2026-09-06T10:00:00

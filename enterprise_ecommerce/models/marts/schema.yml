@@ -5,7 +5,6 @@ models:
     description: "Analytics-ready order fact table at one row per order."
 
     columns:
-
       - name: order_id
         description: "Unique identifier for the order."
         data_tests:
@@ -51,5 +50,60 @@ models:
 
       - name: total_items
         description: "Number of order lines associated with the order."
+        data_tests:
+          - not_null
+
+      - name: total_quantity
+        description: "Total number of units purchased in the order."
+        data_tests:
+          - not_null
+
+      - name: distinct_products
+        description: "Number of distinct products in the order."
+        data_tests:
+          - not_null
+
+      - name: product_categories
+        description: "Comma-separated list of product categories in the order."
+        data_tests:
+          - not_null
+
+  - name: dim_products
+    description: "Product dimension containing pricing and profitability attributes."
+
+    columns:
+      - name: product_id
+        description: "Unique product identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Product name."
+        data_tests:
+          - not_null
+
+      - name: category
+        description: "Top-level product category."
+        data_tests:
+          - not_null
+
+      - name: unit_cost
+        description: "Product acquisition cost."
+        data_tests:
+          - not_null
+
+      - name: list_price
+        description: "Product selling price."
+        data_tests:
+          - not_null
+
+      - name: profit_margin
+        description: "Absolute margin between list price and unit cost."
+        data_tests:
+          - not_null
+
+      - name: profit_margin_pct
+        description: "Profit margin expressed as a percentage of list price."
         data_tests:
           - not_null

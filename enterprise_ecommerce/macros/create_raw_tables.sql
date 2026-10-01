@@ -21,4 +21,11 @@
          from ecommerce_dev.dbt_dev.order_items"
     ) %}
 
+        {% do run_query(
+        "create or replace table ecommerce_dev.raw.products as
+         select *,
+                current_timestamp() as _loaded_at
+         from ecommerce_dev.dbt_dev.products"
+    ) %}
+
 {% endmacro %}
