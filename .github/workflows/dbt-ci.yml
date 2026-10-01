@@ -60,4 +60,4 @@ jobs:
 
       - name: dbt build
         working-directory: enterprise_ecommerce
-        run: dbt build
+        run: dbt build --full-refresh
