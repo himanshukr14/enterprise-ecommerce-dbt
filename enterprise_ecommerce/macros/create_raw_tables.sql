@@ -28,4 +28,11 @@
          from ecommerce_dev.dbt_dev.products"
     ) %}
 
+    {% do run_query(
+        "create or replace table ecommerce_dev.raw.payments as
+         select *,
+                current_timestamp() as _loaded_at
+         from ecommerce_dev.dbt_dev.payments"
+    ) %}
+
 {% endmacro %}
