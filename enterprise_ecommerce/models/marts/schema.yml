@@ -166,3 +166,77 @@ models:
         description: "Payment amount counted only for successful attempts."
         data_tests:
           - not_null
+
+  - name: daily_sales
+    description: "Daily sales and payment performance aggregated by order date and currency."
+
+    columns:
+      - name: order_date
+        description: "Date on which orders were placed."
+        data_tests:
+          - not_null
+
+      - name: currency
+        description: "Currency used for the order and payment metrics."
+        data_tests:
+          - not_null
+
+      - name: total_orders
+        description: "Total number of orders for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: completed_orders
+        description: "Number of completed orders for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: cancelled_orders
+        description: "Number of cancelled orders for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: total_items
+        description: "Total number of order lines for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: total_quantity
+        description: "Total units purchased for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: gross_order_value
+        description: "Sum of source order totals for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: calculated_order_value
+        description: "Sum of order values calculated from order items."
+        data_tests:
+          - not_null
+
+      - name: payment_attempts
+        description: "Total number of payment attempts for the date and currency."
+        data_tests:
+          - not_null
+
+      - name: successful_payments
+        description: "Number of successful payment attempts."
+        data_tests:
+          - not_null
+
+      - name: failed_payments
+        description: "Number of failed payment attempts."
+        data_tests:
+          - not_null
+
+      - name: pending_payments
+        description: "Number of pending payment attempts."
+        data_tests:
+          - not_null
+
+      - name: successful_payment_value
+        description: "Total value of successful payments for the date and currency."
+        data_tests:
+          - not_null
