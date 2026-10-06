@@ -61,3 +61,15 @@ jobs:
       - name: dbt build
         working-directory: enterprise_ecommerce
         run: dbt build --full-refresh
+
+      - name: Generate dbt docs
+        working-directory: enterprise_ecommerce
+        run: dbt docs generate
+
+      - name: Upload dbt state artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-state
+          path: enterprise_ecommerce/target/manifest.json
+          retention-days: 7
