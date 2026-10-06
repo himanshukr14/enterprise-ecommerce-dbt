@@ -102,3 +102,64 @@ models:
                   - INR
                   - USD
                   - GBP
+
+  - name: stg_payments
+    description: "Cleaned and standardized payment transaction records."
+
+    columns:
+      - name: payment_id
+        description: "Unique identifier for each payment attempt."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: order_id
+        description: "Order associated with the payment."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: payment_date
+        description: "Timestamp when the payment was attempted."
+        data_tests:
+          - not_null
+
+      - name: payment_method
+        description: "Method used to attempt payment."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - UPI
+                  - CARD
+
+      - name: payment_status
+        description: "Outcome or current state of the payment attempt."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - success
+                  - failed
+                  - pending
+
+      - name: amount
+        description: "Amount associated with the payment attempt."
+        data_tests:
+          - not_null
+
+      - name: currency
+        description: "Currency of the payment amount."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - INR
+                  - USD
+                  - GBP

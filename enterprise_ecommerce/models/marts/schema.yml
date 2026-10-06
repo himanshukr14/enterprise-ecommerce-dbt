@@ -107,3 +107,62 @@ models:
         description: "Profit margin expressed as a percentage of list price."
         data_tests:
           - not_null
+
+
+  - name: fct_payments
+    description: "Analytics-ready payment fact table at one row per payment attempt."
+
+    columns:
+      - name: payment_id
+        description: "Unique identifier for each payment attempt."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: order_id
+        description: "Order associated with the payment attempt."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: payment_date
+        description: "Timestamp when the payment was attempted."
+        data_tests:
+          - not_null
+
+      - name: payment_method
+        description: "Method used for the payment attempt."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['UPI', 'CARD']
+
+      - name: payment_status
+        description: "Outcome of the payment attempt."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['success', 'failed', 'pending']
+
+      - name: payment_amount
+        description: "Amount associated with the payment attempt."
+        data_tests:
+          - not_null
+
+      - name: payment_currency
+        description: "Currency of the payment amount."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['INR', 'USD', 'GBP']
+
+      - name: successful_payment_amount
+        description: "Payment amount counted only for successful attempts."
+        data_tests:
+          - not_null

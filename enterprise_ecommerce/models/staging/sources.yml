@@ -47,6 +47,9 @@ sources:
 
       - name: products
         description: "Raw product records from the source product system."
+
+      - name: payments
+        description: "Raw payment transaction records."
         config:
           loaded_at_field: _loaded_at
           freshness:
