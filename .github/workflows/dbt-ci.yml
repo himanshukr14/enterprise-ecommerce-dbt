@@ -9,6 +9,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   dbt-ci:
     runs-on: ubuntu-latest
@@ -58,7 +62,37 @@ jobs:
         working-directory: enterprise_ecommerce
         run: dbt parse --no-partial-parse
 
-      - name: dbt build
+      - name: Download dbt state artifact (PR)
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN_ID=$(gh run list \
+            --workflow dbt-ci.yml \
+            --branch main \
+            --event push \
+            --status success \
+            --limit 1 \
+            --json databaseId \
+            --jq '.[0].databaseId')
+
+          if [ -z "$RUN_ID" ]; then
+            echo "No successful main dbt CI run found"
+            exit 1
+          fi
+
+          mkdir -p enterprise_ecommerce/state
+          gh run download "$RUN_ID" \
+            --name dbt-state \
+            --dir enterprise_ecommerce/state
+
+      - name: dbt build (PR - Slim CI)
+        if: github.event_name == 'pull_request'
+        working-directory: enterprise_ecommerce
+        run: dbt build --select state:modified+ --state state --defer
+
+      - name: dbt build (main - Full Refresh)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: enterprise_ecommerce
         run: dbt build --full-refresh
 
