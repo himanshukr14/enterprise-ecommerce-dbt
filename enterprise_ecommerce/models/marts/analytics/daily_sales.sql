@@ -1,4 +1,3 @@
--- Slim CI validation change
 with order_daily as (
 
     select
