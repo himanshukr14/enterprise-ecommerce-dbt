@@ -67,17 +67,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+
           RUN_ID=$(gh run list \
             --workflow dbt-ci.yml \
-            --branch main \
-            --event push \
+            --commit "$BASE_SHA" \
             --status success \
             --limit 1 \
             --json databaseId \
             --jq '.[0].databaseId')
 
           if [ -z "$RUN_ID" ]; then
-            echo "No successful main dbt CI run found"
+            echo "No successful main dbt CI run found for base SHA: $BASE_SHA"
             exit 1
           fi
 
