@@ -102,8 +102,30 @@ jobs:
 
           echo "Successfully downloaded and verified dbt state manifest from run $RUN_ID."
 
-      - name: dbt build (PR - Slim CI)
+      - name: Check Slim CI selection (PR)
         if: github.event_name == 'pull_request'
+        working-directory: enterprise_ecommerce
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SELECTED_NODES=$(dbt ls \
+            --select state:modified+ \
+            --state state \
+            --defer \
+            --output name)
+
+          if [[ -z "${SELECTED_NODES//[[:space:]]/}" ]]; then
+            echo "No modified dbt resources selected. Skipping Slim CI build."
+            echo "has_changes=false" >> "$GITHUB_ENV"
+          else
+            echo "Modified dbt resources selected:"
+            printf '%s\n' "$SELECTED_NODES"
+            echo "has_changes=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: dbt build (PR - Slim CI)
+        if: github.event_name == 'pull_request' && env.has_changes == 'true'
         working-directory: enterprise_ecommerce
         run: dbt build --select state:modified+ --state state --defer
 
