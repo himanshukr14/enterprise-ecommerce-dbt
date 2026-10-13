@@ -69,6 +69,8 @@ jobs:
         run: |
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
 
+          echo "Looking for successful dbt CI run for base SHA: $BASE_SHA"
+
           RUN_ID=$(gh run list \
             --workflow dbt-ci.yml \
             --commit "$BASE_SHA" \
@@ -77,15 +79,28 @@ jobs:
             --json databaseId \
             --jq '.[0].databaseId')
 
-          if [ -z "$RUN_ID" ]; then
-            echo "No successful main dbt CI run found for base SHA: $BASE_SHA"
+          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
+            echo "::error::No successful dbt CI run found for PR base SHA: $BASE_SHA"
+            echo "Ensure the base commit has a successful main-branch CI run and its artifact is still available."
             exit 1
           fi
 
           mkdir -p enterprise_ecommerce/state
-          gh run download "$RUN_ID" \
+
+          if ! gh run download "$RUN_ID" \
             --name dbt-state \
-            --dir enterprise_ecommerce/state
+            --dir enterprise_ecommerce/state; then
+            echo "::error::Failed to download dbt-state artifact from workflow run $RUN_ID."
+            echo "The artifact may have expired or may be missing."
+            exit 1
+          fi
+
+          if [ ! -s enterprise_ecommerce/state/manifest.json ]; then
+            echo "::error::Downloaded state artifact does not contain a non-empty manifest.json."
+            exit 1
+          fi
+
+          echo "Successfully downloaded and verified dbt state manifest from run $RUN_ID."
 
       - name: dbt build (PR - Slim CI)
         if: github.event_name == 'pull_request'
